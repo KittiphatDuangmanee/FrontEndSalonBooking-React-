@@ -1,18 +1,16 @@
-import "./App.css";
+import { Route, Routes } from "react-router-dom";
 import {ThemeProvider } from "@mui/material";
 import greenTheme from "./theme/greenTheme";
-import Notifications from "./Notification/Notifications";
-// import Home from "./Customer/Home/Home";
-// import SalonDetails from "./Salon/SalonDetail/SalonDetails";
-// import Bookings from "./Booking/Bookings";
-
+import "./App.css";
+import SalonDashBoard from "./Seller/SalonDashBoard";
+import CustomerRoutes from "./Routes/CustomerRoutes";
 function App() {
   return (
       <ThemeProvider theme={greenTheme}>
-        {/* <Home /> */}
-        {/* <SalonDetails/> */}
-        {/* <Bookings/> */}
-        <Notifications/>
+        <Routes>
+          <Route path="/salon-dashboard/*" element={<SalonDashBoard/>}/>
+          <Route path="*" element={<CustomerRoutes/>}/>
+        </Routes>
       </ThemeProvider>
   );
 }

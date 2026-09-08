@@ -18,16 +18,17 @@ const SalonServiceDetails = () => {
               selectedCategory={selectedCategory}
               item={index}
               handleCategoryClick={handleCategoryClick}
+              key={index}
             />
           );
         })}
       </section>
       <section className="space-y-2 lg:w-[50%] px-5 lg:px-20 overflow-y-auto">
-        {[1, 1, 1, 1, 1, 1, 1, 1].map((item) => {
+        {[1, 1, 1, 1, 1, 1, 1, 1].map((_, index) => {
           return (
-            <div className="space-y-4">
-              <ServiceCard />
-              <Divider />
+            <div className="space-y-4" key={index}>
+              <ServiceCard/>
+              <Divider/>
             </div>
           );
         })}

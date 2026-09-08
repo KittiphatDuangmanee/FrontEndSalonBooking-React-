@@ -4,9 +4,12 @@ import { IconButton } from "@mui/material";
 const SelectedServiceList = () => {
   return (
     <div className="my-5 space-y-2">
-      {[1, 1, 1, 1, 1].map((item) => {
+      {[1, 1, 1, 1, 1].map((item, index) => {
         return (
-          <div className="py-2 px-4 rounded-md bg-slate-100 flex justify-between items-center">
+          <div
+            className="py-2 px-4 rounded-md bg-slate-100 flex justify-between items-center"
+            key={index}
+          >
             <h1 className="font-thin">Man Beard</h1>
             <p>$399</p>
             <IconButton>

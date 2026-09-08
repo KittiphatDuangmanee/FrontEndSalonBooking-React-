@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { Button, Divider } from "@mui/material";
 import SalonDetail from "./SalonDetail";
-import { useState } from "react";
 import SalonServiceDetails from "./SalonServiceDetails";
+import Review from "../../Customer/Review/Review";
+import CreateReviewForm from "../../Customer/Review/CreateReviewForm";
 
 const tabs = [
   {
@@ -25,10 +27,10 @@ const SalonDetails = () => {
       <SalonDetail/>
       <div className="space-y-4">
         <div className="flex gap-2">
-          {tabs.map((tab) => 
+          {tabs.map((tab, index) => 
             <Button 
               onClick={() => handleActiveTab(tab)} 
-              variant={activeTab.name == tab.name ? "contained":"outlined"} >
+              variant={activeTab.name == tab.name ? "contained":"outlined"} key={index}>
             {tab.name}
             </Button>) 
           }
@@ -38,13 +40,11 @@ const SalonDetails = () => {
       <div>
         {activeTab.name === "Create Review" 
           ? 
-            <div>
-              create review form
-            </div>
+          <div className="flex justify-center">
+            <CreateReviewForm/>
+          </div> 
           : activeTab.name === "Reviews" 
-          ? <div>
-            Review list            
-          </div>
+          ? <Review/>
           : <div>
             <SalonServiceDetails />
           </div>

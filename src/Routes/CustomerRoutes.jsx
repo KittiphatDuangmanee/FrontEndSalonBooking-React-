@@ -1,10 +1,10 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "../Customer/Home/Home";
-import SalonDashBoard from "../Seller/SalonDashBoard";
-import Notifications from "../Notification/Notifications";
-import Bookings from "../Booking/Bookings";
-import SalonDetails from "../Salon/SalonDetail/SalonDetails";
-import Navbar from "../Navbar/Navbar";
+import SalonDashBoard from "../Salon/SalonDashBoard";
+import Notifications from "../Customer/Notification/Notifications";
+import Bookings from "../Customer/Booking/Bookings";
+import SalonDetails from "../Customer/Salon/SalonDetail/SalonDetails";
+import Navbar from "../Customer/Navbar/Navbar";
 import NotFound from "../NotFound/NotFound";
 
 const CustomerRoutes = () => {

@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Button, Divider } from "@mui/material";
 import SalonDetail from "./SalonDetail";
 import SalonServiceDetails from "./SalonServiceDetails";
-import Review from "../../Customer/Review/Review";
-import CreateReviewForm from "../../Customer/Review/CreateReviewForm";
+import Review from "../../Review/Review";
+import CreateReviewForm from "../../Review/CreateReviewForm";
 
 const tabs = [
   {

@@ -1,6 +1,15 @@
+import { useEffect } from "react"
 import BookingCard from "./BookingCard"
+import { useDispatch, useSelector } from "react-redux"
+import { fetchCustomerBookings } from "../../Redux/Booking/action";
 
 const Bookings = () => {
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(fetchCustomerBookings(localStorage.getItem("jwt")));
+    },[dispatch])
+    const {booking} = useSelector(store => store);
+    console.log(booking);
   return (
     <div className="px-5 md:flex flex-col items-center mt-10 min-h-screen">
         <div>
@@ -9,7 +18,7 @@ const Bookings = () => {
             </h1>
         </div>
         <div className="space-y-4 md:w-[35rem]">
-            <BookingCard/>
+            {booking.bookings.map((item) => <BookingCard item={item}/>)}
         </div>
     </div>
   )

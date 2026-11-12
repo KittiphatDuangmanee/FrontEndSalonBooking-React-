@@ -1,36 +1,55 @@
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { fetchSalonById } from "../../../Redux/Salon/action";
+import { getCategoriesBySalon } from "../../../Redux/Category/action";
+
 const SalonDetail = () => {
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const {salon} = useSelector(store=>store);
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchSalonById(id));
+      dispatch(getCategoriesBySalon({
+        jwt: localStorage.getItem("jwt"),
+        salonId:id
+      }))
+    }
+  }, [id]);
+
   return (
     <div className="space-y-5 mb-20">
-        <section className="grid grid-cols-2 gap-3">
-            <div className="col-span-2">
-                <img className="w-full rounded-md h-[15rem] object-cover"
-                    src="https://i.pinimg.com/736x/4f/dc/e2/4fdce25e5a9f3c2125bdedde4ae6fa45.jpg"
-                />
-            </div>
-            <div className="col-span-1">
-                <img className="w-full rounded-md h-[15rem] object-cover"
-                    src="https://i.pinimg.com/736x/4f/dc/e2/4fdce25e5a9f3c2125bdedde4ae6fa45.jpg"
-                />
-            </div>
-            <div className="col-span-1">
-                <img className="w-full rounded-md h-[15rem] object-cover"
-                    src="https://i.pinimg.com/736x/4f/dc/e2/4fdce25e5a9f3c2125bdedde4ae6fa45.jpg"
-                />
-            </div>
-        </section>
-        <section className="space-y-3">
-            <h1 className="font-bold text-3xl">
-                Remarkable Salon
-            </h1>
-            <p>
-                Remarkable Bangkok Thailand.
-            </p>
-            <p>
-                <strong>Timing :</strong> 10:00:00 To 18:30:00
-            </p>
-        </section>
+      <section className="grid grid-cols-2 gap-3">
+        <div className="col-span-2">
+          <img
+            className="w-full rounded-md h-[15rem] object-cover"
+            src={salon.salon?.images[0]}
+          />
+        </div>
+        <div className="col-span-1">
+          <img
+            className="w-full rounded-md h-[15rem] object-cover"
+            src={salon.salon?.images[1]}
+          />
+        </div>
+        <div className="col-span-1">
+          <img
+            className="w-full rounded-md h-[15rem] object-cover"
+            src={salon.salon?.images[2]}
+          />
+        </div>
+      </section>
+      <section className="space-y-3">
+        <h1 className="font-bold text-3xl">{salon.salon?.name}</h1>
+        <p>{salon.salon?.address}</p>
+        <p>
+          <strong>Timing :</strong> {salon.salon?.openTime} To {salon.salon?.closeTime}
+        </p>
+      </section>
     </div>
-  )
-}
+  );
+};
 
-export default SalonDetail
+export default SalonDetail;

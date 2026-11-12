@@ -12,8 +12,26 @@ import {
   TextField,
 } from "@mui/material";
 import { useFormik } from "formik";
+import { useEffect, useState } from "react";
+import { uploadToCloudinary } from "../../util/uploadToCloudinary";
+import { useDispatch, useSelector } from "react-redux";
+import { createServiceAction } from "../../Redux/SalonServices/action";
+import { getCategoriesBySalon } from "../../Redux/Category/action";
 
 const CreateServiceForm = () => {
+  const { salon, category } = useSelector((store) => store);
+  const [uploadImage, setUploadImage] = useState(false);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (salon.salon) {
+      dispatch(
+        getCategoriesBySalon({
+          jwt: localStorage.getItem("jwt"),
+          salonId: salon.salon?.id,
+        }),
+      );
+    }
+  }, [dispatch, salon.salon]);
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -21,12 +39,35 @@ const CreateServiceForm = () => {
       description: "",
       price: "",
       duration: "",
-      category: "",
+      categoryId: "",
     },
-    onSubmit: () => {
+    onSubmit: (values) => {
       console.log("Submitting", formik.values);
+      dispatch(
+        createServiceAction({
+          jwt: localStorage.getItem("jwt"),
+          service: values,
+        }),
+      );
+      resetInput();
     },
   });
+  const resetInput = () => {
+    formik.setFieldValue("name", "");
+    formik.setFieldValue("image", "");
+    formik.setFieldValue("categoryId", "");
+    formik.setFieldValue("duration", "");
+    formik.setFieldValue("price", "");
+    formik.setFieldValue("description", "");
+  };
+
+  const handleImageChange = async (event) => {
+    const file = event.target.files[0];
+    setUploadImage(true);
+    const image = await uploadToCloudinary(file);
+    formik.setFieldValue("image", image);
+    setUploadImage(false);
+  };
 
   return (
     <div className="flex justify-center items-center">
@@ -36,13 +77,12 @@ const CreateServiceForm = () => {
       >
         <Grid container spacing={2}>
           <Grid className="w-24 h-24" size={{ xs: 12 }}>
-            {false ? (
+            {formik.values.image ? (
               <div className="relative border">
                 <img
                   className="w-24 h-24 object-cover"
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSGUzzmKx_VH3cnnuIXTWOGNyhk0wBZTRmTPCysM14SCbjGhefjmmR1ro&s"
+                  src={formik.values.image}
                 />
-
                 <IconButton
                   color="error"
                   size="small"
@@ -58,12 +98,13 @@ const CreateServiceForm = () => {
                   accept="image/*"
                   id="fileInput"
                   style={{ display: "none" }}
+                  onChange={handleImageChange}
                 />
                 <label className="relative" htmlFor="fileInput">
                   <span className="w-24 h-24 cursor-pointer flex items-center justify-center p-3 border rounded-md border-gray-400">
                     <AddPhotoAlternate className="text-grey-700" />
                   </span>
-                  {false && (
+                  {uploadImage && (
                     <div className="absolute left-0 right-0 top-0 bottom-0 w-24 h-24 flex justify-center items-center">
                       <CircularProgress />
                     </div>
@@ -124,12 +165,16 @@ const CreateServiceForm = () => {
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={formik.values.category}
+                value={formik.values.categoryId}
                 label="Category"
-                name="category"
+                name="categoryId"
                 onChange={formik.handleChange}
               >
-                {[1,1,1,1,1].map((_,index) => <MenuItem value={"haircut"+index}>Hair Cut</MenuItem>)}
+                {category.categories && category.categories.map((item) => (
+                  <MenuItem value={item.id} key={item.id}>
+                    {item.name}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Grid>

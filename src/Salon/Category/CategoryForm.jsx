@@ -8,28 +8,55 @@ import {
   TextField,
 } from "@mui/material";
 import { useFormik } from "formik";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { uploadToCloudinary } from "../../util/uploadToCloudinary";
+import { createCategory } from "../../Redux/Category/action";
 
 const CategoryForm = () => {
+  const dispatch = useDispatch();
+  const [uploadImage, setUploadImage] = useState(false);
+
   const formik = useFormik({
-    initialValues:{
-      name:"",
-      image:""
+    initialValues: {
+      name: "",
+      image: "",
     },
-    onSubmit:() => {
+    onSubmit: (values) => {
+      dispatch(
+        createCategory({ jwt: localStorage.getItem("jwt"), category: values }),
+      );
       console.log("Submitting", formik.values);
-    }
+      resetInput();
+    },
   });
+
+  const resetInput = () => {
+    formik.setFieldValue("name","");
+    formik.setFieldValue("image","");
+  }
+
+  const handleImageChange = async (event) => {
+    const file = event.target.files[0];
+    setUploadImage(true);
+    const image = await uploadToCloudinary(file);
+    formik.setFieldValue("image", image);
+    setUploadImage(false);
+  };
 
   return (
     <div className="flex justify-center items-center">
-      <form onSubmit={formik.handleSubmit} className="space-y-4 p-4 w-full lg:w-1/2">
+      <form
+        onSubmit={formik.handleSubmit}
+        className="space-y-4 p-4 w-full lg:w-1/2"
+      >
         <Grid container spacing={2}>
           <Grid className="w-24 h-24" size={{ xs: 12 }}>
-            {false ? (
+            {formik.values.image ? (
               <div className="relative border">
                 <img
                   className="w-24 h-24 object-cover"
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSGUzzmKx_VH3cnnuIXTWOGNyhk0wBZTRmTPCysM14SCbjGhefjmmR1ro&s"
+                  src={formik.values.image}
                 />
 
                 <IconButton
@@ -47,12 +74,13 @@ const CategoryForm = () => {
                   accept="image/*"
                   id="fileInput"
                   style={{ display: "none" }}
+                  onChange={handleImageChange}
                 />
                 <label className="relative" htmlFor="fileInput">
                   <span className="w-24 h-24 cursor-pointer flex items-center justify-center p-3 border rounded-md border-gray-400">
                     <AddPhotoAlternate className="text-grey-700" />
                   </span>
-                  {false && (
+                  {uploadImage && (
                     <div className="absolute left-0 right-0 top-0 bottom-0 w-24 h-24 flex justify-center items-center">
                       <CircularProgress />
                     </div>

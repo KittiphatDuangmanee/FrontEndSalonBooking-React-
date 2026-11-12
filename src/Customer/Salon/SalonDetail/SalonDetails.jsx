@@ -5,53 +5,57 @@ import SalonServiceDetails from "./SalonServiceDetails";
 import Review from "../../Review/Review";
 import CreateReviewForm from "../../Review/CreateReviewForm";
 
+
 const tabs = [
   {
-    name:"All services"
+    name: "All services",
   },
   {
-    name:"Reviews"
+    name: "Reviews",
   },
   {
-    name:"Create Review"
-  }
-]
+    name: "Create Review",
+  },
+];
 
 const SalonDetails = () => {
   const [activeTab, setActiveTab] = useState(tabs[0]);
   const handleActiveTab = (tab) => {
-    setActiveTab(tab)
-  }
+    setActiveTab(tab);
+  };
+  
   return (
     <div className="px-5 lg:px20">
-      <SalonDetail/>
+      <SalonDetail />
       <div className="space-y-4">
         <div className="flex gap-2">
-          {tabs.map((tab, index) => 
-            <Button 
-              onClick={() => handleActiveTab(tab)} 
-              variant={activeTab.name == tab.name ? "contained":"outlined"} key={index}>
-            {tab.name}
-            </Button>) 
-          }
+          {tabs.map((tab, index) => (
+            <Button
+              onClick={() => handleActiveTab(tab)}
+              variant={activeTab.name == tab.name ? "contained" : "outlined"}
+              key={index}
+            >
+              {tab.name}
+            </Button>
+          ))}
         </div>
-        <Divider/>
+        <Divider />
       </div>
       <div>
-        {activeTab.name === "Create Review" 
-          ? 
+        {activeTab.name === "Create Review" ? (
           <div className="flex justify-center">
-            <CreateReviewForm/>
-          </div> 
-          : activeTab.name === "Reviews" 
-          ? <Review/>
-          : <div>
+            <CreateReviewForm />
+          </div>
+        ) : activeTab.name === "Reviews" ? (
+          <Review />
+        ) : (
+          <div>
             <SalonServiceDetails />
           </div>
-        }
+        )}
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default SalonDetails;

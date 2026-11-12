@@ -71,7 +71,7 @@ const menu2 = [
     activeIcon: <AccountBox className="text-secondary-color" />,
   },
   {
-    name: "Logout",
+    name: "Go to Home",
     path: "/",
     icon: <Logout className="text-primary-color" />,
     activeIcon: <Logout className="text-secondary-color" />,

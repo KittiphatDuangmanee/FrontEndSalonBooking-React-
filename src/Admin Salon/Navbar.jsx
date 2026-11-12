@@ -3,7 +3,6 @@ import { Badge, Drawer, IconButton} from "@mui/material"
 import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from "react";
 import SalonDrawerList from "../Salon/components/SalonDrawerList";
-
 const Navbar = () => {
     const [open, setOpen] = useState(false)
     const toggleOpen = (status) => {

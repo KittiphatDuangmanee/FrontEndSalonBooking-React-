@@ -6,6 +6,7 @@ import Bookings from "../Customer/Booking/Bookings";
 import SalonDetails from "../Customer/Salon/SalonDetail/SalonDetails";
 import Navbar from "../Customer/Navbar/Navbar";
 import NotFound from "../NotFound/NotFound";
+import PaymentSuccess from "../Customer/Payment/PaymentSuccess";
 
 const CustomerRoutes = () => {
   return (
@@ -16,6 +17,7 @@ const CustomerRoutes = () => {
         <Route path="notifications" element={<Notifications />} />
         <Route path="bookings" element={<Bookings />} />
         <Route path="salon/:id" element={<SalonDetails />} />
+        <Route path="payment-success/*" element={<PaymentSuccess />} />
         <Route path="*" element={<NotFound/>}/>
       </Route>
     </Routes>

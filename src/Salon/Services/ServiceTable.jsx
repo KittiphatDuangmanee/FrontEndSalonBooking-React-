@@ -6,6 +6,13 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { Edit } from "@mui/icons-material";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import {
+  fetchServicesBySalonId,
+} from "../../Redux/SalonServices/action";
+import IconButton from "@mui/material/IconButton";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -27,19 +34,21 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
 
 export default function ServiceTable() {
+  const dispatch = useDispatch();
+  const { salon,salonService} = useSelector((store) => store);
+  useEffect(() => {
+    if (salon.salon) {
+      dispatch(
+        fetchServicesBySalonId({
+          salonId: salon.salon?.id,
+          jwt: localStorage.getItem("jwt"),
+          categoryId: null,
+        }),
+      );
+    }
+  }, [dispatch, salon.salon]);
   return (
     <>
       <h1 className="pb-5 font-bold text-xl">Services</h1>
@@ -55,18 +64,22 @@ export default function ServiceTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <StyledTableRow key={row.name}>
+            {salonService.services.map((service) => (
+              <StyledTableRow key={service.id}>
                 <StyledTableCell component="th" scope="row">
                   <div className="flex gap-1 flex-wrap">
-                    <img className="w-20 rounded-md" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNCgeQQYVZu3OXrm54wGR2Bkl-BXiuOpC37Xp8XGfROg&s=10"/>
+                    <img
+                      className="w-20 rounded-md"
+                      src={service.image}
+                    />
                   </div>
                 </StyledTableCell>
-                <StyledTableCell align="right">{row.calories}</StyledTableCell>
-                <StyledTableCell align="right">{row.fat}</StyledTableCell>
+                <StyledTableCell align="right">{service.name}</StyledTableCell>
+                <StyledTableCell align="right">{service.price}</StyledTableCell>
                 <StyledTableCell align="right" className="space-y-2">
-                    <p>Full Name: Mark Remarkable</p>
-                    <p>remarkable@gmail.com</p>
+                  <IconButton>
+                    <Edit/>
+                  </IconButton>
                 </StyledTableCell>
               </StyledTableRow>
             ))}

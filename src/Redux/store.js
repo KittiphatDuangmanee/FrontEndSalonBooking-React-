@@ -8,6 +8,7 @@ import notificationReducer from "./Notifications/reducer";
 import reviewReducer from "./Review/reducer";
 import serviceOfferingReducer from "./SalonServices/reducer";
 import proceedPaymentReducer from "./Payment/reducer";
+import chartReducer from "./Chart/reducer";
 
 
 const rootReducers = combineReducers({
@@ -18,7 +19,8 @@ const rootReducers = combineReducers({
     notification: notificationReducer,
     review: reviewReducer,
     salonService: serviceOfferingReducer,
-    payment: proceedPaymentReducer
+    payment: proceedPaymentReducer,
+    chart: chartReducer
 })
 
 export const store=legacy_createStore(rootReducers, applyMiddleware(thunk))
